@@ -1,0 +1,88 @@
+# ROS1 specific ignores
+build/
+devel/
+install/
+logs/
+.catkin_workspace
+.catkin_tools/
+
+# Generated ROS messages and services
+*.msg.generated
+*.srv.generated
+
+# Bag files
+*.bag
+
+# Python compiled files
+*.py[cod]
+__pycache__/
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# C++ compiled files
+*.o
+*.so
+*.a
+*.la
+*.lo
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# IDE specific files
+.idea/
+*.swp
+*.swo
+.vscode/
+*.sublime-workspace
+*.sublime-project
+.settings/
+.project
+.cproject
+.pydevproject
+
+# OS specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+*~
+*.orig
+.*.swp
+
+# Log files
+*.log
+
+# ROS dynamic reconfigure
+*.cfgc
+/cfg/cpp/
+
+# QT generated
+*moc_*
+*automoc*
+*ui_*
+*qrc_*
+
+# Simulation specific
+*.world.generated

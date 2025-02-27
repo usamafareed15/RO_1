@@ -10,7 +10,7 @@ class FormationControl:
     def __init__(self):
         rospy.init_node('formation_control')
         
-        # Initialize pose for leader
+        # Initialize pose for leader or wait for it
         self.leader_pose = None
         self.leader_name = 'b01006947Leader'
         
