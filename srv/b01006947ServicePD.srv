@@ -1,0 +1,6 @@
+string turtle_name
+float32 goal_x
+float32 goal_y
+float32 tolerance
+---
+bool success

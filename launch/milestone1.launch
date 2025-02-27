@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- Start turtlesim node -->
+    <node name="turtlesim" pkg="turtlesim" type="turtlesim_node" output="screen"/>
+    
+    <!-- Run setup script to create turtles -->
+    <node name="setup_turtles" pkg="com760cw1_b01006947" type="setup_turtles.py" output="screen"/>
+    
+    <!-- Start the PD service -->
+    <node name="pd_service" pkg="com760cw1_b01006947" type="pd_service.py" output="screen" 
+          launch-prefix="bash -c 'sleep 3; $0 $@'" />
+    
+    <!-- Start the follower controller nodes -->
+    <node name="follower_a_controller" pkg="com760cw1_b01006947" type="follower_a.py" output="screen"
+          launch-prefix="bash -c 'sleep 5; $0 $@'" />
+    <node name="follower_b_controller" pkg="com760cw1_b01006947" type="follower_b.py" output="screen"
+          launch-prefix="bash -c 'sleep 5; $0 $@'" />
+    <node name="follower_c_controller" pkg="com760cw1_b01006947" type="follower_c.py" output="screen"
+          launch-prefix="bash -c 'sleep 5; $0 $@'" />
+    
+    <!-- Start the formation control node (leader) -->
+    <node name="formation_control" pkg="com760cw1_b01006947" type="formation_control.py" output="screen"
+          launch-prefix="bash -c 'sleep 6; $0 $@'" />
+</launch>
