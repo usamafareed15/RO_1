@@ -6,7 +6,6 @@ from geometry_msgs.msg import Twist
 from turtlesim.msg import Pose
 
 # Import your custom service by its generated Python module
-# Note: we're changing how we import the service
 from com760cw1_b01006947.srv import *
 
 class PDService:
@@ -40,6 +39,13 @@ class PDService:
             self.publishers[turtle_name] = rospy.Publisher(
                 f'/{turtle_name}/cmd_vel', Twist, queue_size=10)
             rospy.loginfo(f"Set up control for turtle: {turtle_name}")
+            
+        # The additional subscriber logic for debug purposes
+        rospy.Subscriber("/b01006947Leader/pose", Pose, self.debug_pose_callback)
+    
+    def debug_pose_callback(self, data):
+        """Debug callback to log leader pose"""
+        rospy.loginfo(f"Leader at x={data.x:.2f} y={data.y:.2f} theta={data.theta:.2f}")
     
     def pose_callback(self, pose_msg, turtle_name):
         """Store the current pose of each turtle"""
@@ -84,6 +90,28 @@ class PDService:
             # Check if we've reached the goal
             if distance < tolerance:
                 rospy.loginfo(f"{turtle_name} reached the goal!")
+                
+                # Set orientation to match the leader's
+                if 'Follower' in turtle_name and 'b01006947Leader' in self.poses:
+                    leader_pose = self.poses['b01006947Leader']
+                    target_angle = leader_pose.theta  # Match leader's orientation
+                    
+                    # Calculate error between current and target angle
+                    angle_error = self.normalize_angle(target_angle - current_pose.theta)
+                    
+                    # Apply rotation to reach target angle
+                    rospy.loginfo(f"Setting {turtle_name} orientation to match the leader: {target_angle:.2f} radians")
+                    
+                    while abs(angle_error) > 0.05 and not rospy.is_shutdown() and iteration < max_iterations:
+                        cmd = Twist()
+                        cmd.angular.z = kp_angular * angle_error
+                        self.publishers[turtle_name].publish(cmd)
+                        rate.sleep()
+                        
+                        # Update current pose and angle error
+                        current_pose = self.poses[turtle_name]
+                        angle_error = self.normalize_angle(target_angle - current_pose.theta)
+                        iteration += 1
                 
                 # Stop the turtle
                 stop_cmd = Twist()
